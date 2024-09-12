@@ -9,36 +9,36 @@ Sales order data stored in a CSV file with columns such as SalesOrderID, OrderQt
 
 **Step 1**: Define the Schema
 The schema is defined using PySpark's StructType, which ensures that each column has the correct data type, including the ModifiedDate which is of type DateType.
-
-schema = StructType([
-    StructField("SalesOrderID", IntegerType(), True),
-    StructField("SalesOrderDetailID", IntegerType(), True),
-    StructField("CarrierTrackingNumber", StringType(), True),
-    ...
-    StructField("ModifiedDate", DateType(), True)
-])
+    
+    schema = StructType([
+        StructField("SalesOrderID", IntegerType(), True),
+        StructField("SalesOrderDetailID", IntegerType(), True),
+        StructField("CarrierTrackingNumber", StringType(), True),
+        ...
+        StructField("ModifiedDate", DateType(), True)
+    ])
 
 **Step 2**: Load the Data
 The sales order data is loaded from a CSV file located at /FileStore/tables/Sales_SalesOrderDetail__2_.csv. The file is read with the defined schema to ensure proper column data types.
 
-file_path = '/FileStore/tables/Sales_SalesOrderDetail__2_.csv'
-df = spark.read.csv(file_path, header=True, schema=schema)
+    file_path = '/FileStore/tables/Sales_SalesOrderDetail__2_.csv'
+    df = spark.read.csv(file_path, header=True, schema=schema)
 
 **Step 3**: Convert the Date to UTC and European Time Zones
 The ModifiedDate column is first converted to a timestamp in UTC. Then, additional columns are created to convert the timestamp into five European time zones using from_utc_timestamp() for daylight saving time handling:
 
-London (GMT/WET)
-Paris (CET)
-Helsinki (EET)
-Moscow (MSK)
-Lisbon (WEST)
+    London (GMT/WET)
+    Paris (CET)
+    Helsinki (EET)
+    Moscow (MSK)
+    Lisbon (WEST)
 
-df = df.withColumn("UTC", to_timestamp(col("ModifiedDate"), "yyyy-MM-dd"))
-df = df.withColumn("London_GMT/WET", from_utc_timestamp(col("UTC"), "Europe/London")) \
-       .withColumn("Paris_CET", from_utc_timestamp(col("UTC"), "Europe/Paris")) \
-       .withColumn("Helsinki_EET", from_utc_timestamp(col("UTC"), "Europe/Helsinki")) \
-       .withColumn("Moscow_MSK", from_utc_timestamp(col("UTC"), "Europe/Moscow")) \
-       .withColumn("Lisbon_WEST", from_utc_timestamp(col("UTC"), "Europe/Lisbon"))
+    df = df.withColumn("UTC", to_timestamp(col("ModifiedDate"), "yyyy-MM-dd"))
+    df = df.withColumn("London_GMT/WET", from_utc_timestamp(col("UTC"), "Europe/London")) \
+           .withColumn("Paris_CET", from_utc_timestamp(col("UTC"), "Europe/Paris")) \
+           .withColumn("Helsinki_EET", from_utc_timestamp(col("UTC"), "Europe/Helsinki")) \
+           .withColumn("Moscow_MSK", from_utc_timestamp(col("UTC"), "Europe/Moscow")) \
+           .withColumn("Lisbon_WEST", from_utc_timestamp(col("UTC"), "Europe/Lisbon"))
 
 **Step 4**: Extract Year and Month
 The script extracts the Year and Month from the ModifiedDate column and combines them into a new YearMonth column for easy partitioning.
