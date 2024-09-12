@@ -5,6 +5,7 @@ This PySpark script processes sales order data, converts timestamps into multipl
 Apache Spark with PySpark installed.
 Sales order data stored in a CSV file with columns such as SalesOrderID, OrderQty, ProductID, and ModifiedDate.
 Script Overview
+
 Step 1: Define the Schema
 The schema is defined using PySpark's StructType, which ensures that each column has the correct data type, including the ModifiedDate which is of type DateType.
 
