@@ -54,7 +54,7 @@ The data is partitioned by YearMonth, and each partition is saved as a separate 
         df_ym.write.mode("overwrite").option("mergeSchema", "true").format("delta").saveAsTable(f"default.sales_data_{ym}", header=True)
 
 # Output
-The script outputs the sales order data into separate Delta tables for each YearMonth. Each table is saved with the format **sales_data_<Year>_<Month>** (e.g., sales_data_2024_08).
+The script outputs the sales order data into separate Delta tables for each YearMonth. Each table is saved with the format sales_data_<Year>_<Month> (e.g., **sales_data_2024_08**).
 
 # Usage Instructions
 Place the sales data CSV file at the specified path: /FileStore/tables/Sales_SalesOrderDetail__2_.csv.
