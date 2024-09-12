@@ -8,7 +8,6 @@ Script Overview
 Step 1: Define the Schema
 The schema is defined using PySpark's StructType, which ensures that each column has the correct data type, including the ModifiedDate which is of type DateType.
 
-
 schema = StructType([
     StructField("SalesOrderID", IntegerType(), True),
     StructField("SalesOrderDetailID", IntegerType(), True),
